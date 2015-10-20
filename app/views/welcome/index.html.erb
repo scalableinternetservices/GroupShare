@@ -1,1 +1,23 @@
 <h1>Stream Share</h1>
+
+<%= form_for :stream, url: stream_index_path do |f| %>
+    <%= f.text_field :owner, placeholder: "Owner" %>
+    <br>
+
+    <%= f.text_field :title, placeholder: "Title" %>
+    <br>
+
+    <%= f.text_field :description, placeholder: "Description" %>
+    <br>
+
+    <%= f.text_field :expire_minutes, placeholder: "Minutes" %>
+    <br>
+
+    <%= f.text_field :pin, placeholder: "Pin" %>
+    <br>
+
+    <%= f.check_box :is_private %> private
+    <br>
+
+    <%= submit_tag("Start!") %>
+<% end %>
