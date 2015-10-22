@@ -1,15 +1,18 @@
-<h1>Stream Share</h1>
+<h1>Welcome to Stream Share!</h1>
+
+Start a new stream by filling out the information below:
 
 <%= form_for :stream, url: stream_index_path do |f| %>
-    <%= f.text_field :owner, placeholder: "Owner" %>
+    <%= f.text_field :owner, placeholder: "Your name", :required => true %>
     <br>
 
-    <%= f.text_field :title, placeholder: "Title" %>
+    <%= f.text_field :title, placeholder: "Topic", :required => true %>
     <br>
 
-    <%= f.text_field :description, placeholder: "Description" %>
+    <%= f.text_area :description, placeholder: "What is the stream about?" %>
     <br>
 
+    <!--
     <%= f.text_field :expire_minutes, placeholder: "Minutes" %>
     <br>
 
@@ -18,6 +21,7 @@
 
     <%= f.check_box :is_private %> private
     <br>
+    -->
 
-    <%= submit_tag("Start!") %>
+    <%= submit_tag("Start") %>
 <% end %>
