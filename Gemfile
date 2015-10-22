@@ -34,7 +34,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 
 ## custom added gems
-gem 'nokogiri', '>=1.6.6.2'
+#gem 'nokogiri', '>=1.6.6.2'
 #
 ## custom - end
 
