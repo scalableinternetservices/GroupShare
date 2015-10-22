@@ -1,0 +1,25 @@
+<h1>Stream: <%= @stream.title %> </h1>
+<table>
+  <th>
+    Content title
+  </th>
+  <th>
+    Content owner
+  </th>
+
+  <% @stream.contents.each do |content| %>
+    <tr>
+    <td>
+        <%= content.title %>
+    </td>
+    <td>
+        <%= content.owner %>
+        </td>
+    </tr>
+  <% end %>
+</table>
+
+<%= form_for :content, url: stream_content_index_path(@stream[:id]) do |f| %>
+    <%= f.text_area :data, placeholder: "Enter data here" %>
+    <%= submit_tag("Submit") %>
+<% end %>
