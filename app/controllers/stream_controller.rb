@@ -17,10 +17,8 @@ class StreamController < ApplicationController
     redirect_to @stream
   end
 
-  def join
-  end
-
   def show
     @stream = Stream.find(params[:id])
+    fresh_when([@stream, @stream.contents])
   end
 end
