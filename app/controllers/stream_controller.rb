@@ -12,13 +12,13 @@ class StreamController < ApplicationController
     #render plain: @stream.inspect
     @stream.save
 
-    redirect_to @stream
-  end
+    session[:owner] = @stream.owner
 
-  def join
+    redirect_to @stream
   end
 
   def show
     @stream = Stream.find(params[:id])
+    fresh_when([@stream, @stream.contents])
   end
 end
