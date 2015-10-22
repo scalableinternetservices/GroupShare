@@ -9,13 +9,16 @@ class StreamController < ApplicationController
     @stream.pin_hash = params[:stream][:pin].hash
     @stream.expire_at = Time.now + params[:stream][:expire_minutes].to_i.minutes
 
-    render plain: @stream.inspect
+    #render plain: @stream.inspect
     @stream.save
+
+    redirect_to @stream
   end
 
   def join
   end
 
   def show
+    @stream = Stream.find(params[:id])
   end
 end

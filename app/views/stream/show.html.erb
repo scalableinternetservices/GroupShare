@@ -1,2 +1,21 @@
-<h1>Stream#show</h1>
-<p>Find me in app/views/stream/show.html.erb</p>
+<h1>Stream: <%= @stream.title %> </h1>
+
+<table>
+  <th>
+    Content title
+  </th>
+  <th>
+    Content owner
+  </th>
+
+  <%= @stream.contents.each do |content| %>
+    <tr>
+    <td>
+      <%= content.title %>
+    </td>
+    <td>
+      <%= content.owner %>
+    </td>
+    </tr>
+  <% end %>
+</table>
