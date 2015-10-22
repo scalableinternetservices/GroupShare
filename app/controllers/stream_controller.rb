@@ -12,6 +12,8 @@ class StreamController < ApplicationController
     #render plain: @stream.inspect
     @stream.save
 
+    session[:owner] = @stream.owner
+
     redirect_to @stream
   end
 

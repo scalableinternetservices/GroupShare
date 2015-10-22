@@ -1,25 +1,17 @@
-<h1>Stream: <%= @stream.title %> </h1>
-<table>
-  <th>
-    Content title
-  </th>
-  <th>
-    Content owner
-  </th>
+<head>
+  <meta http-equiv="refresh" content="10">
+</head>
 
-  <% @stream.contents.each do |content| %>
-    <tr>
-    <td>
-        <%= content.title %>
-    </td>
-    <td>
-        <%= content.owner %>
-        </td>
-    </tr>
-  <% end %>
-</table>
-
+<h1><%= @stream.title %></h1>
+<h5>by <%= @stream.owner %></h5>
+<%= @stream.description %>
+<hr/><br/>
+<% @stream.contents.each do |content| %>
+    <%= content.owner %>: <%= content.title %> <br/>
+<% end %>
+<br/>
 <%= form_for :content, url: stream_content_index_path(@stream[:id]) do |f| %>
-    <%= f.text_area :data, placeholder: "Enter data here" %>
+    <%= f.text_field :owner, placeholder: "Your name", required: true, value: session[:owner] %> <br/>
+    <%= f.text_area :data, placeholder: "Enter data here", required: true %> <br/>
     <%= submit_tag("Submit") %>
 <% end %>
