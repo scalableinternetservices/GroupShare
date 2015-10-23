@@ -19,6 +19,6 @@ class StreamController < ApplicationController
 
   def show
     @stream = Stream.find(params[:id])
-    fresh_when([@stream, @stream.contents])
+    #fresh_when([@stream, @stream.contents])
   end
 end
