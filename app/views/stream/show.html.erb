@@ -1,6 +1,6 @@
-<head>
-  <meta http-equiv="refresh" content="10">
-</head>
+<!--<head>-->
+<!--<meta http-equiv="refresh" content="10">-->
+<!--</head>-->
 
 <div class="container center-block text-center">
   <h1><%= @stream.title %></h1>
@@ -13,6 +13,9 @@
       <% @stream.contents.each do |content| %>
           <% cache(cache_key_for_content_row(content)) do %>
               <%= content.owner %>: <%= content.title %> <br/>
+              <% if content.file? %>
+                  <%= image_tag content.file.url, size: "50x50" %> <br/>
+              <% end %>
           <% end %>
       <% end %> <br/>
   <% end %>
@@ -23,7 +26,7 @@
         <%= f.text_field :owner, placeholder: "Your name", required: true, value: session[:owner], class: "form-control" %>
         <br/>
         <%= f.text_area :data, placeholder: "Enter data here", required: true, class: "form-control" %> <br/>
-        <%= f.file_field :file %>
+        <%= f.file_field :file, class: "form-control" %> <br/>
         <%= submit_tag("Submit") %>
     <% end %>
   </div>
