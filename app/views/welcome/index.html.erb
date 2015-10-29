@@ -1,24 +1,28 @@
-<div class="container center-block jumbotron text-center">
-  <h1>Welcome to Stream Share!</h1>
-  <h4>Start a new stream by filling out the information below:</h4>
+<div class="wrap container-fluid">
+  <div class="fleft">
+      <%= render 'streams/allstreams' %>
+  </div>
 
-  <div class="row col-md-6 col-md-offset-3">
+  <div class="fright text-center">
+    <h5>Start a new stream by filling out the information below:</h5>
 
-    <%= form_for :stream, url: stream_index_path, class: "form-group" do |f| %>
+    <div class="row col-md-6 col-md-offset-3">
 
-        <div class="form-group">
-          <%= f.text_field :owner, placeholder: "Your name", required: true, class: "form-control" %>
-        </div>
+      <%= form_for :stream, url: streams_path, class: "form-group" do |f| %>
 
-        <div class="form-group">
-          <%= f.text_field :title, placeholder: "Topic", required: true, class: "form-control" %>
-        </div>
+          <div class="form-group">
+            <%= f.text_field :owner, placeholder: "Your name", required: true, class: "form-control" %>
+          </div>
 
-        <div class="form-group">
-          <%= f.text_area :description, placeholder: "What is the stream about?", class: "form-control", rows: "5" %>
-        </div>
+          <div class="form-group">
+            <%= f.text_field :title, placeholder: "Topic", required: true, class: "form-control" %>
+          </div>
 
-        <!--
+          <div class="form-group">
+            <%= f.text_area :description, placeholder: "What is the stream about?", class: "form-control", rows: "3" %>
+          </div>
+
+          <!--
     <%= f.text_field :expire_minutes, placeholder: "Minutes" %>
     <br>
 
@@ -29,7 +33,12 @@
     <br>
     -->
 
-        <%= submit_tag "Start", class: "btn btn-default" %>
-    <% end %>
+          <%= submit_tag "Start", class: "btn btn-default" %>
+      <% end %>
+    </div>
+
   </div>
+
 </div>
+
+<div style="clear:both"></div>

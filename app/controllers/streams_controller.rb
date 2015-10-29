@@ -1,4 +1,8 @@
-class StreamController < ApplicationController
+class StreamsController < ApplicationController
+  def index
+    @allstream = Stream.all
+  end
+
   def create
     @stream = Stream.new
 

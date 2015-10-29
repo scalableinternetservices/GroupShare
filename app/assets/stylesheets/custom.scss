@@ -1,11 +1,45 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+h1 {
+  font-size: 3em;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+header{
+  padding-bottom: 10px;
+}
+
+.wrap {
+  width: 100%;
+  height: 100%;
+  padding-top: 20px;
+  overflow:auto;
+}
+
+.fleft {
+  float:left;
+  width: 30%;
+  height: 400px;
+  background: lightyellow;
+
+}
+
+.fright {
+  float: right;
+  width: 70%;
+  height: 400px;
+  background: lavenderblush;
+}
+
 body, html {
   height: 100%;
   overflow: hidden;
   padding-top: 44px;
-  padding-bottom: 56px;
+  padding-bottom: 95px;
 }
 
 #contents {

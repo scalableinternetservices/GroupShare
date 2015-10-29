@@ -1,4 +1,4 @@
-module StreamHelper
+module StreamsHelper
 
   def cache_key_for_content_list(contents)
     "content-list-#{contents.count}"
