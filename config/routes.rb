@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  resources :stream do
+  resources :streams do
     resources :contents
   end
 

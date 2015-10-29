@@ -4,3 +4,37 @@
 body {
   padding-top: 50px;
   }
+
+h1 {
+  font-size: 3em;
+  letter-spacing: 2px;
+  margin-bottom: 5px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+header{
+  padding-bottom: 10px;
+}
+
+.wrap {
+  width: 100%;
+  height: 100%;
+  padding-top: 20px;
+  overflow:auto;
+}
+
+.fleft {
+  float:left;
+  width: 30%;
+  height: 400px;
+  background: lightyellow;
+
+}
+
+.fright {
+  float: right;
+  width: 70%;
+  height: 400px;
+  background:lavenderblush;
+}
