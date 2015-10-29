@@ -4,6 +4,11 @@
 
 $(function () {
     if (($("#allstreams").length > 0)) {
-        $.getScript("streams");
+        updateStreams();
     }
 });
+
+function updateStreams(){
+    $.getScript("streams");
+    setTimeout(updateStreams, 5000);
+}
