@@ -1,3 +1,7 @@
-<div class="stream">
-  <%= stream.title %> by <%= stream.owner %>
+<div class="stream bubble" data-time="<%= stream.created_at.to_i %>" data-id="<%= stream.id %>">
+
+  <b><%= link_to stream.title, stream %></b>
+  by
+  <i> <%= stream.owner %> </i>
+
 </div>

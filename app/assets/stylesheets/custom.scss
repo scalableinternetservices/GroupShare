@@ -25,7 +25,7 @@ header{
   width: 30%;
   height: 400px;
   background: lightyellow;
-
+  overflow: scroll;
 }
 
 .fright {
@@ -55,4 +55,16 @@ body, html {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
+}
+
+#allstream{
+  margin-top: 10px;
+}
+.stream{
+  //box-sizing: inherit;
+  margin-bottom: 2px;
+}
+
+.stream-head{
+  text-align: center;
 }

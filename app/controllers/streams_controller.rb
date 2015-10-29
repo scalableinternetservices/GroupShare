@@ -1,6 +1,6 @@
 class StreamsController < ApplicationController
   def index
-    @allstream = Stream.all
+    @n_stream = Stream.where("created_at > ?", Time.at(params[:after].to_i + 1)).order(created_at: :desc)
   end
 
   def create
