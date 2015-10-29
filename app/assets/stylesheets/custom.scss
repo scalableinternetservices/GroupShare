@@ -1,14 +1,10 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
-body {
-  padding-top: 50px;
-  }
-
 h1 {
   font-size: 3em;
   letter-spacing: 2px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   margin-top: 10px;
   text-align: center;
 }
@@ -36,5 +32,27 @@ header{
   float: right;
   width: 70%;
   height: 400px;
-  background:lavenderblush;
+  background: lavenderblush;
+}
+
+body, html {
+  height: 100%;
+  overflow: hidden;
+  padding-top: 44px;
+  padding-bottom: 95px;
+}
+
+#contents {
+  overflow: auto;
+  height: 100%;
+  padding: 0;
+}
+
+.bubble {
+  padding: 5px;
+  background: #eee;
+  margin-bottom: 8px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
 }
