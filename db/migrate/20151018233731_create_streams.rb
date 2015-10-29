@@ -9,6 +9,7 @@ class CreateStreams < ActiveRecord::Migration
       t.string :pin_hash
 
       t.timestamps null: false
+      t.string :public_id
 
     end
   end

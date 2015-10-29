@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  #get 'stream/:id' => 'stream/:public_id'
+  get 'stream' => 'stream#show'
+  get 'stream/:public_id' => 'stream#show'
+
   resources :stream do
     resources :content
   end

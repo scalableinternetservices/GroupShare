@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20151018234550) do
     t.string   "pin_hash"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.string   "public_id"
   end
 
 end
