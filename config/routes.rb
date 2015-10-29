@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   resources :stream do
-    resources :content
+    resources :contents
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -1,0 +1,6 @@
+<div class="content" data-time="<%= content.created_at.to_i %>">
+  <%= content.owner %>: <%= content.title %>
+  <% if content.file? %>
+      <br/> <%= image_tag content.file.url, size: "50x50" %>
+  <% end %>
+</div>
