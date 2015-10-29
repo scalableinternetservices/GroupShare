@@ -1,4 +1,8 @@
-class ContentController < ApplicationController
+class ContentsController < ApplicationController
+  def index
+    @new_content = Content.where("stream_id = ? and created_at > ?", params[:stream_id], Time.at(params[:after].to_i + 1))
+  end
+
   def create
     @content = Content.new
 
