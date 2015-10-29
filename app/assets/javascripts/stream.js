@@ -9,6 +9,7 @@ $(function () {
 });
 
 function updateStreams(){
-    $.getScript("streams");
+    var after = $(".stream:first-child").attr("data-time");
+    $.getScript("streams?after="+after);
     setTimeout(updateStreams, 5000);
 }
