@@ -1,6 +1,6 @@
-<div class="content" data-time="<%= content.created_at.to_i %>">
-  <%= content.owner %>: <%= content.title %>
+<div class="content row col-md-6 col-md-offset-3 bubble" data-time="<%= content.created_at.to_i %>">
+  <b><%= content.owner %>:</b> <%= content.title %>
   <% if content.file? %>
-      <br/> <%= image_tag content.file.url, size: "50x50" %>
+      <%= image_tag content.file.url, class: "img-responsive", width: "50%" %>
   <% end %>
 </div>

@@ -1,22 +1,31 @@
-<div class="container center-block text-center">
-  <h1><%= @stream.title %></h1>
-  <h5>by <%= @stream.owner %></h5>
+<div class="container text-center navbar navbar-fixed-top ">
+  <h3><%= @stream.title %>
+    <small>by <%= @stream.owner %></small>
+  </h3>
   <%= @stream.description %>
-  <hr/>
-
-  <div id="contents" data-id="<%= @stream.id %>">
-    <%= render @stream.contents %>
-  </div>
-
-  <hr/>
-
-  <div class="row col-md-6 col-md-offset-3">
-    <%= form_for :content, url: stream_contents_path(@stream[:id]), class: "form-group" do |f| %>
-        <%= f.text_field :owner, placeholder: "Your name", required: true, value: session[:owner], class: "form-control" %>
-        <br/>
-        <%= f.text_area :data, placeholder: "Enter data here", required: true, class: "form-control" %> <br/>
-        <%= f.file_field :file, class: "form-control" %> <br/>
-        <%= submit_tag("Submit") %>
-    <% end %>
-  </div>
 </div>
+
+<div id="contents" data-id="<%= @stream.id %>">
+  <%= render @stream.contents %>
+</div>
+
+<div class="row col-md-6 col-md-offset-3 navbar navbar-fixed-bottom">
+  <%= form_for :content, url: stream_contents_path(@stream[:id]), class: "form-group" do |f| %>
+
+      <%= f.text_field :owner, placeholder: "Your name", required: true, value: session[:owner], class: "form-control", autocomplete: "off" %>
+      <div class="input-group">
+        <%= f.text_field :data, placeholder: "Type a message", required: true, class: "form-control", autocomplete: "off", autofocus: "true" %>
+        <span class="input-group-btn">
+            <%= submit_tag "Send", class: "btn btn-primary" %>
+          </span>
+      </div>
+      <%= f.file_field :file, class: "form-control", accept: "image/*" %>
+
+  <% end %>
+</div>
+
+<script type="application/x-javascript">
+    $("#contents").scrollTop(function () {
+        return this.scrollHeight
+    })
+</script>
