@@ -6,8 +6,9 @@ class ContentsController < ApplicationController
   def create
     @content = Content.new
 
-    @content.title = params[:content][:data]
     @content.owner = params[:content][:owner]
+    @content.title = params[:content][:data]
+    @content.file = params[:content][:file]
     @content.stream_id = params[:stream_id]
     @content.save
 
