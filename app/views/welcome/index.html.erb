@@ -31,5 +31,22 @@
 
         <%= submit_tag "Start", class: "btn btn-default" %>
     <% end %>
+
+    <p>Search</p>
+
+    <%= form_for :stream, url: stream_search_path, method: 'get', class: "form-group" do |f2| %>
+
+        <div class="form-group">
+          <%= f2.text_field :q, placeholder: "Search Here", required: true, class: "form-control" %>
+        </div>
+
+        <%= submit_tag "Search", class: "btn btn-default" %>
+    <% end %>
+
+
+
+
+
   </div>
+
 </div>

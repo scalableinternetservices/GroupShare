@@ -22,6 +22,12 @@ class StreamController < ApplicationController
     #redirect_to :anchor => @stream  #show
   end
 
+
+  def search
+    @results = Stream.search(params[:stream][:q])
+  end
+
+
   def show
     #render plain: params[:id]
     #@stream = Stream.find(params[:public_id])
@@ -35,7 +41,6 @@ class StreamController < ApplicationController
     #fresh_when([@stream, @stream.contents])
   end
 
-  def index
-    show()
-  end
+
+
 end

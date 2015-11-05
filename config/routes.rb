@@ -1,8 +1,12 @@
 Rails.application.routes.draw do
 
+  get 'stream/search' => 'stream#search'
+
   #get 'stream/:id' => 'stream/:public_id'
-  get 'stream' => 'stream#show'
   get 'stream/:public_id' => 'stream#show'
+  get 'stream' => 'stream#show'
+
+
 
   resources :stream do
     resources :content
