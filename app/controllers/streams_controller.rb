@@ -25,4 +25,9 @@ class StreamsController < ApplicationController
     @stream = Stream.find(params[:id])
     #fresh_when([@stream, @stream.contents])
   end
+
+  def search
+    @results = Stream.search(params[:streams][:q])
+  end
+
 end
