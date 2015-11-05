@@ -1,6 +1,6 @@
 class StreamsController < ApplicationController
   def index
-    @n_stream = Stream.where("created_at > ?", Time.at(params[:after].to_i + 1)).order(created_at: :desc)
+    @n_stream = Stream.where("expire_at > ? and created_at > ?", Time.now, Time.at(params[:after].to_i + 1)).order(created_at: :desc)
   end
 
   def create
@@ -11,7 +11,7 @@ class StreamsController < ApplicationController
     @stream.description = params[:stream][:description]
     @stream.is_public = !params[:stream][:is_private]
     @stream.pin_hash = params[:stream][:pin].hash
-    @stream.expire_at = Time.now + params[:stream][:expire_minutes].to_i.minutes
+    @stream.expire_at = Chronic.parse(params[:stream][:expire] + " from now")
 
     #render plain: @stream.inspect
     @stream.save
@@ -22,7 +22,13 @@ class StreamsController < ApplicationController
   end
 
   def show
-    @stream = Stream.find(params[:id])
+    @stream = Stream.where("expire_at > ?", Time.now).find(params[:id])
     #fresh_when([@stream, @stream.contents])
+  rescue ActiveRecord::RecordNotFound
+    render_404
+  end
+
+  def render_404
+    render file: "#{Rails.root}/public/404.html", layout: false, status: 404
   end
 end
