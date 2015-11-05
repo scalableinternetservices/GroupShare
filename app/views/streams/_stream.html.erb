@@ -2,6 +2,7 @@
 
   <b><%= link_to stream.title, stream %> (<%= stream.contents.size %>)</b>
   by
-  <i> <%= stream.owner %> </i>
+  <i> <%= stream.owner %> </i> <br/>
+  <i> <%= time_ago_in_words(stream.created_at, include_seconds: true) %> ago</i>
 
 </div>
