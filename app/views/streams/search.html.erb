@@ -1,0 +1,32 @@
+<div class="container center-block text-center">
+  <h1> Search Results </h1>
+  <h5> Query: <%= params[:streams][:q] %></h5>
+  <h6> <%= @results.size() %> results found </h6>
+  <hr/>
+
+
+
+  <div  class="text-left">
+  <% if @results %>
+      <table>
+        <% @results.each do |result| %>
+            <tr>
+              <td>
+                <b><%= link_to result.title, result %> (<%= result.contents.size %>)</b>
+                by
+                <i> <%= result.owner %> </i>
+              </td>
+            </tr>
+
+        <% end %>
+
+      </table>
+      <br/>
+  <% else %>
+      No ResultsFound
+  <% end %> <br/>
+  </div>
+
+  <hr/>
+
+</div>

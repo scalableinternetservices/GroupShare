@@ -31,4 +31,9 @@ class StreamsController < ApplicationController
   def render_404
     render file: "#{Rails.root}/public/404.html", layout: false, status: 404
   end
+
+  def search
+    @results = Stream.search(params[:streams][:q])
+  end
+
 end
