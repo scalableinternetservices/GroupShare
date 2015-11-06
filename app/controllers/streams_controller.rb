@@ -33,7 +33,7 @@ class StreamsController < ApplicationController
   end
 
   def search
-    @results = Stream.search(params[:streams][:q])
+    @results = Stream.search(params[:q])
   end
 
 end

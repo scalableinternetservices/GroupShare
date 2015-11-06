@@ -1,5 +1,21 @@
 <header class="navbar-fixed-top navbar">
-  <div class="container">
-    <h1>Stream Share!</h1>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <h1><%= link_to 'Stream Share', root_path %></h1>
+    </div>
+    <div class="col-lg-6">
+      <h1>
+      <%= form_tag("/search", method: "get", enforce_utf8: false) do %>
+          <div class="input-group">
+            <%= text_field_tag :q, nil, placeholder: "Search streams...", autocomplete: "off", class: "form-control" %>
+            <span class="input-group-btn">
+              <%= submit_tag :Go, name: nil, class: "btn btn-default" %>
+            </span>
+          </div>
+      <% end %>
+      </h1>
+    </div>
   </div>
+
 </header>

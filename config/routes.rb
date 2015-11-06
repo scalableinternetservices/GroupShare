@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  get 'streams/search' => 'streams#search'
+  get 'search' => 'streams#search'
   resources :streams do
     resources :contents
   end
