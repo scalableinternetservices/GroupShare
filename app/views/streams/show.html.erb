@@ -1,6 +1,9 @@
 <div class="container text-center ">
   <h3><%= @stream.title %>
-    <small>by <%= @stream.owner %></small>
+    <small>by <%= @stream.owner %>,</small>
+    <i>
+      <small>expires in <%= time_ago_in_words(@stream.expire_at, include_seconds: true) %></small>
+    </i>
   </h3>
   <%= @stream.description %>
 </div>
@@ -25,7 +28,7 @@
 </div>
 
 <script type="application/x-javascript">
-    $("#contents").scrollTop(function () {
-        return this.scrollHeight
-    })
+  $("#contents").scrollTop(function () {
+    return this.scrollHeight
+  })
 </script>
