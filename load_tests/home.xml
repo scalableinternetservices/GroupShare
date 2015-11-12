@@ -40,12 +40,14 @@
         Firefox/1.0.4
       </user_agent>
     </option>
+
+    <option name="file_server" value="expire_times.txt" id="expire_times"/>
   </options>
 
   <sessions>
 
     <!-- Open home page. Wait for 15 secs. Search. -->
-    <session name="http-example" probability="100" type="ts_http">
+    <session name="home-search" type="ts_http" weight="1">
 
       <!-- Visit home page -->
       <request>
@@ -78,6 +80,54 @@
       </setdynvars>
       <request subst="true">
         <http url="/search?q=%%_random_query%%" version='1.1' method='GET'/>
+      </request>
+
+    </session>
+
+    <!-- Open home page. Wait for 15 secs. Create a stream. -->
+    <session name="home-create-stream" type="ts_http" weight="1">
+
+      <!-- Visit home page -->
+      <request>
+        <http url='/' version='1.1' method='GET'/>
+      </request>
+      <request>
+        <http url='/assets/application-5051e943fde6dabd2cb7ed9ccb7a462766d108b1231f340fb2008aae04c864a6.css'
+              version='1.1' method='GET'/>
+      </request>
+      <request>
+        <http url='/assets/application-e8f7cbef131995ec574161020aa5f1df2053aad57e2e29f8fa9ee3efd3babc2b.js'
+              version='1.1' method='GET'/>
+      </request>
+
+      <!-- Recent streams refresh itself every 5 secs -->
+      <for from="1" to="3" incr="1" var="counter">
+        <request subst="true">
+          <http url="/streams?after=undefined" method="GET" version="1.1">
+            <http_header name="X-Requested-With" value="XMLHttpRequest"/>
+          </http>
+        </request>
+
+        <!-- wait for 5 secs -->
+        <thinktime value="5"/>
+      </for>
+
+      <!-- create a new stream -->
+      <setdynvars sourcetype="random_string" length="10">
+        <var name="owner"/>
+      </setdynvars>
+      <setdynvars sourcetype="random_string" length="15">
+        <var name="title"/>
+      </setdynvars>
+      <setdynvars sourcetype="random_string" length="50">
+        <var name="description"/>
+      </setdynvars>
+      <setdynvars sourcetype="file" fileid="expire_times" delimiter="\n" order="random">
+        <var name="expire"/>
+      </setdynvars>
+      <request subst="true">
+        <http url="/streams" version='1.1' method='POST' content_type='application/x-www-form-urlencoded'
+              contents="stream%5Bowner%5D=%%_owner%%&amp;stream%5Btitle%5D=%%_title%%&amp;stream%5Bdescription%5D=%%_description%%&amp;stream%5Bexpire%5D=%%_expire%%"/>
       </request>
 
     </session>
