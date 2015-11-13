@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd">
+<tsung loglevel="notice" version="1.0">
+
+  <!-- Client side setup -->
+  <clients>
+    <client host="localhost" use_controller_vm="true" maxusers='15000'/>
+  </clients>
+
+  <!-- Server side setup -->
+  <servers>
+    <server host="localhost" port="3000" type="tcp"></server>
+  </servers>
+
+
+  <load>
+    <arrivalphase phase="1" duration="30" unit="second">
+      <users arrivalrate="1" unit="second"></users>
+    </arrivalphase>
+  </load>
+
+  <options>
+    <!-- Set connection timeout to 2 seconds -->
+    <option name="global_ack_timeout" value="2000"></option>
+
+    <option type="ts_http" name="user_agent">
+      <user_agent probability="100">Mozilla/5.0 (Windows; U; Windows NT 5.2; fr-FR; rv:1.7.8) Gecko/20050511
+        Firefox/1.0.4
+      </user_agent>
+    </option>
+
+    <option name="file_server" value="expire_times.txt" id="expire_times"/>
+  </options>
+
+  <sessions>
+
+    <!-- Open home page. Wait for 15 secs. Search. -->
+    <session name="home-search" type="ts_http" weight="1">
+
+      <!-- Visit home page -->
+      <request>
+        <http url='/' version='1.1' method='GET'/>
+      </request>
+      <request>
+        <http url='/assets/application-5051e943fde6dabd2cb7ed9ccb7a462766d108b1231f340fb2008aae04c864a6.css'
+              version='1.1' method='GET'/>
+      </request>
+      <request>
+        <http url='/assets/application-e8f7cbef131995ec574161020aa5f1df2053aad57e2e29f8fa9ee3efd3babc2b.js'
+              version='1.1' method='GET'/>
+      </request>
+
+      <!-- Recent streams refresh itself every 5 secs -->
+
+
+      <!-- Search -->
+      <setdynvars sourcetype="random_string" length="1">
+        <var name="random_query"/>
+      </setdynvars>
+      <request subst="true">
+          <!--  <dyn_variable name="response" re="([\w\W*])"> -->
+              <!--    <dyn_variable name="link" xpath="//input[@name='field1']/@value"/> -->
+        <dyn_variable name="link" xpath="/html/body/div/div/div[1]/b/a/@href"/>
+        <http url="/search?q=%%_random_query%%" version='1.1' method='GET'/>
+      </request>
+      <thinktime value="3" />
+      <!-- open random result -->
+   <!--  <setdynvars sourcetype="eval"
+                  code="fun({Pid,DynVars})->
+                           {ok,Val}=ts_dynvars:lookup('links',DynVars),
+                           Rand = random:uniform(length(Val)),
+                           lists:nth(Rand,Val)
+                        end.">
+        <var name="list" />
+      </setdynvars> -->
+  <!--      <if var=count(link) gt="0">
+        <setdynvars sourcetype="random_number" start="1" end=count(link)>
+            <var name="rndint" />
+        </setdynvars> -->
+          <request subst="true">
+            <http url="%%_link%%" version='1.1' method='GET'/>
+          </request>
+     <!-- </if> -->
+
+    </session>
+
+    
+  </sessions>
+</tsung>
