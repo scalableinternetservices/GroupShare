@@ -13,13 +13,13 @@
 </div>
 
 <div class="row col-md-6 col-md-offset-3 navbar navbar-fixed-bottom">
-  <%= form_for :content, url: stream_contents_path(@stream[:id]), class: "form-group" do |f| %>
+  <%= form_for :content, url: stream_contents_path(@stream[:id]), enforce_utf8: false, class: "form-group" do |f| %>
 
       <%= f.text_field :owner, placeholder: "Your name", required: true, value: session[:owner], class: "form-control", autocomplete: "off" %>
       <div class="input-group">
         <%= f.text_field :data, placeholder: "Type a message", required: true, class: "form-control", autocomplete: "off", autofocus: "true" %>
         <span class="input-group-btn">
-            <%= submit_tag "Send", class: "btn btn-primary" %>
+            <%= submit_tag "Send", name: nil, class: "btn btn-primary" %>
           </span>
       </div>
       <%= f.file_field :file, class: "form-control", accept: "image/*" %>
