@@ -9,7 +9,7 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="54.164.32.124" port="80" type="tcp"></server>
+    <server host="54.85.132.168" port="80" type="tcp"></server>
   </servers>
 
 
@@ -82,14 +82,18 @@
         <dyn_variable name="link" xpath="/html/body/div/div/div[1]/b/a/@href"/>
         <http url="/search?q=%%_random_query%%" version='1.1' method='GET'/>
       </request>
-      <thinktime value="3" random="true" />
-          <request subst="true">
-            <http url="%%_link%%" version='1.1' method='GET'/>
-          </request>
+
+      <!--wait upto 3 seconds-->
+      <thinktime value="3" random="true"/>
+
+      <!--visit first link-->
+      <request subst="true">
+        <http url="%%_link%%" version='1.1' method='GET'/>
+      </request>
 
     </session>
 
-    <!-- Open home page. Wait for 15 secs. Create a stream. -->
+    <!-- Open home page. Wait for 15 secs. Create a stream. Post a new message. -->
     <session name="home-create-stream" type="ts_http" weight="1">
 
       <!-- Visit home page -->
