@@ -1,0 +1,13 @@
+* HIGH PRIORITY *
+- limit recent streams and disable auto refresh
+- limit search results
+- optimise stream page diff update ??
+- fix tests so that no 4xx errors occur
+- decide and improve test sessions
+- record baseline test data
+- use s3 bucket for file uploads
+
+* LOW PRIORITY *
+- Fix site styling throughout
+- implement search pagination
+- async message post on stream page

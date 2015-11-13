@@ -1,0 +1,2 @@
+rsync -auve 'ssh -i groupshare.pem’ ec2-user@54.166.5.220:.tsung/log/ .
+ssh -i groupshare.pem ec2-user@54.166.5.220

@@ -1,0 +1,140 @@
+<?xml version="1.0"?><tsung loglevel="notice" version="1.0">
+
+  <clients>
+    <client host="localhost" use_controller_vm="true" maxusers="15000"/>
+  </clients>
+
+  <servers>
+    <server host="54.85.132.168" port="80" type="tcp"/>
+  </servers>
+
+
+  <load>
+    <arrivalphase phase="1" duration="30" unit="second">
+      <users arrivalrate="1" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="2" duration="30" unit="second">
+      <users arrivalrate="2" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="3" duration="30" unit="second">
+      <users arrivalrate="4" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="4" duration="30" unit="second">
+      <users arrivalrate="8" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="5" duration="30" unit="second">
+      <users arrivalrate="16" unit="second"/>
+    </arrivalphase>
+  </load>
+
+  <options>
+    <option name="global_ack_timeout" value="2000"/>
+
+    <option type="ts_http" name="user_agent">
+      <user_agent probability="100">Mozilla/5.0 (Windows; U; Windows NT 5.2; fr-FR; rv:1.7.8) Gecko/20050511
+        Firefox/1.0.4
+      </user_agent>
+    </option>
+
+    <option name="file_server" value="expire_times.txt" id="expire_times"/>
+  </options>
+
+  <sessions>
+
+    <session name="home-search" type="ts_http" weight="1">
+
+      <request>
+        <http url="/" version="1.1" method="GET"/>
+      </request>
+      <request>
+        <http url="/assets/application-5051e943fde6dabd2cb7ed9ccb7a462766d108b1231f340fb2008aae04c864a6.css" version="1.1" method="GET"/>
+      </request>
+      <request>
+        <http url="/assets/application-e8f7cbef131995ec574161020aa5f1df2053aad57e2e29f8fa9ee3efd3babc2b.js" version="1.1" method="GET"/>
+      </request>
+
+      <for from="1" to="3" incr="1" var="counter">
+        <request subst="true">
+          <http url="/streams?after=undefined" method="GET" version="1.1">
+            <http_header name="X-Requested-With" value="XMLHttpRequest"/>
+          </http>
+        </request>
+
+        <thinktime value="5"/>
+      </for>
+
+      <setdynvars sourcetype="random_string" length="5">
+        <var name="random_query"/>
+      </setdynvars>
+      <request subst="true">
+        <dyn_variable name="link" xpath="/html/body/div/div/div[1]/b/a/@href"/>
+        <http url="/search?q=%%_random_query%%" version="1.1" method="GET"/>
+      </request>
+
+      <thinktime value="3" random="true"/>
+
+      <request subst="true">
+        <http url="%%_link%%" version="1.1" method="GET"/>
+      </request>
+
+    </session>
+
+    <session name="home-create-stream" type="ts_http" weight="1">
+
+      <request>
+        <http url="/" version="1.1" method="GET"/>
+      </request>
+      <request>
+        <http url="/assets/application-5051e943fde6dabd2cb7ed9ccb7a462766d108b1231f340fb2008aae04c864a6.css" version="1.1" method="GET"/>
+      </request>
+      <request>
+        <http url="/assets/application-e8f7cbef131995ec574161020aa5f1df2053aad57e2e29f8fa9ee3efd3babc2b.js" version="1.1" method="GET"/>
+      </request>
+
+      <for from="1" to="3" incr="1" var="counter">
+        <request subst="true">
+          <http url="/streams?after=undefined" method="GET" version="1.1">
+            <http_header name="X-Requested-With" value="XMLHttpRequest"/>
+          </http>
+        </request>
+
+        <thinktime value="5"/>
+      </for>
+
+      <setdynvars sourcetype="random_string" length="10">
+        <var name="owner"/>
+      </setdynvars>
+      <setdynvars sourcetype="random_string" length="15">
+        <var name="title"/>
+      </setdynvars>
+      <setdynvars sourcetype="random_string" length="50">
+        <var name="description"/>
+      </setdynvars>
+      <setdynvars sourcetype="file" fileid="expire_times" delimiter="\n" order="random">
+        <var name="expire"/>
+      </setdynvars>
+      <request subst="true">
+        <dyn_variable name="stream_url" re="[Ll]ocation: (http://.*)\r"/>
+        <dyn_variable name="stream_id" re="[Ll]ocation: http://.*/streams/(.*)\r"/>
+        <http url="/streams" version="1.1" method="POST" content_type="application/x-www-form-urlencoded" contents="stream%5Bowner%5D=%%_owner%%&amp;stream%5Btitle%5D=%%_title%%&amp;stream%5Bdescription%5D=%%_description%%&amp;stream%5Bexpire%5D=%%_expire%%"/>
+      </request>
+
+      <request subst="true">
+        <http url="%%_stream_url%%" version="1.1" method="GET"/>
+      </request>
+
+      <thinktime value="5" random="true"/>
+
+      <setdynvars sourcetype="eval" code="fun({Pid,DynVars})-> [[13, 10]] end.">
+        <var name="nl"/>
+      </setdynvars>
+      <setdynvars sourcetype="random_string" length="50">
+        <var name="data"/>
+      </setdynvars>
+      <request subst="true">
+        <http url="%%_stream_url%%/contents" version="1.1" method="POST" content_type="multipart/form-data; boundary=----FormBoundary" contents="------FormBoundary%%_nl%%Content-Disposition: form-data; name=&quot;content[owner]&quot;%%_nl%%%%_nl%%%%_owner%%%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name=&quot;content[data]&quot;%%_nl%%%%_nl%%%%_data%%%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name=&quot;content[file]&quot;; filename=&quot;&quot;%%_nl%%Content-Type: application/octet-stream%%_nl%%%%_nl%%%%_nl%%------FormBoundary--"/>
+      </request>
+
+    </session>
+  </sessions>
+</tsung>
