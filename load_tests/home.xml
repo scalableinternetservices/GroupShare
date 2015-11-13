@@ -79,8 +79,13 @@
         <var name="random_query"/>
       </setdynvars>
       <request subst="true">
+        <dyn_variable name="link" xpath="/html/body/div/div/div[1]/b/a/@href"/>
         <http url="/search?q=%%_random_query%%" version='1.1' method='GET'/>
       </request>
+      <thinktime value="3" random="true" />
+          <request subst="true">
+            <http url="%%_link%%" version='1.1' method='GET'/>
+          </request>
 
     </session>
 
