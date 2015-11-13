@@ -1,6 +1,6 @@
 class StreamsController < ApplicationController
   def index
-    @n_stream = Stream.where("expire_at > ? and created_at > ?", Time.now, Time.at(params[:after].to_i + 1)).order(created_at: :desc)
+    @n_stream = Stream.where("expire_at > ? and created_at > ?", Time.now, Time.at(params[:after].to_i + 1)).limit(20).order(created_at: :desc)
   end
 
   def create
