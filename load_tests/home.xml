@@ -126,8 +126,31 @@
         <var name="expire"/>
       </setdynvars>
       <request subst="true">
+        <dyn_variable name="stream_url" re="[Ll]ocation: (http://.*)\r"/>
+        <dyn_variable name="stream_id" re="[Ll]ocation: http://.*/streams/(.*)\r"/>
         <http url="/streams" version='1.1' method='POST' content_type='application/x-www-form-urlencoded'
               contents="stream%5Bowner%5D=%%_owner%%&amp;stream%5Btitle%5D=%%_title%%&amp;stream%5Bdescription%5D=%%_description%%&amp;stream%5Bexpire%5D=%%_expire%%"/>
+      </request>
+
+      <!--visit the stream-->
+      <request subst="true">
+        <http url="%%_stream_url%%" version='1.1' method='GET'/>
+      </request>
+
+      <!-- wait for 0 to 5 secs -->
+      <thinktime value="5" random="true"/>
+
+      <!-- post a text message -->
+      <setdynvars sourcetype="eval" code='fun({Pid,DynVars})-> [[13, 10]] end.'>
+        <var name="nl"/>
+      </setdynvars>
+      <setdynvars sourcetype="random_string" length="50">
+        <var name="data"/>
+      </setdynvars>
+      <request subst="true">
+        <http url='%%_stream_url%%/contents' version='1.1' method='POST'
+              content_type='multipart/form-data; boundary=----FormBoundary'
+              contents='------FormBoundary%%_nl%%Content-Disposition: form-data; name="content[owner]"%%_nl%%%%_nl%%%%_owner%%%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="content[data]"%%_nl%%%%_nl%%%%_data%%%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="content[file]"; filename=""%%_nl%%Content-Type: application/octet-stream%%_nl%%%%_nl%%%%_nl%%------FormBoundary--'/>
       </request>
 
     </session>
