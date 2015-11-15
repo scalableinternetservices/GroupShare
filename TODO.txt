@@ -1,6 +1,6 @@
 * HIGH PRIORITY *
-- limit recent streams and disable auto refresh
-- limit search results
+- Fix test for fetching images on page with no img tags
+- Correct auto refresh logic of show stream
 - optimise stream page diff update ??
 - fix tests so that no 4xx errors occur
 - decide and improve test sessions
@@ -8,6 +8,7 @@
 - use s3 bucket for file uploads
 
 * LOW PRIORITY *
+- Auto scroll to bottom on stream page
 - Fix site styling throughout
 - implement search pagination
 - async message post on stream page
