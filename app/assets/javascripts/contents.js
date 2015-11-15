@@ -3,14 +3,12 @@
 // You can use CoffeeScript in this file: http://coffeescript.org/
 
 $(function () {
-    if (($("#contents").length > 0)) {
-        setTimeout(updateContents, 5000);
-    }
+    setTimeout(updateContents, 5000);
 });
 
 function updateContents() {
-    var stream_id = $("#contents").attr("data-id");
+    var stream_id = $(".contents").attr("data-id");
     var after = $(".content:last-child").attr("data-time");
-    $.getScript(stream_id+"/contents.js?after="+after);
+    $.getScript(stream_id + "/contents.js?after=" + after);
     setTimeout(updateContents, 5000);
 }

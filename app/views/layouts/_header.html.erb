@@ -1,21 +1,17 @@
-<header class="navbar-fixed-top navbar">
+<header class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
 
-  <div class="row">
-    <div class="col-lg-6">
-      <h1><%= link_to 'Stream Share', root_path %></h1>
+    <div class="navbar-header">
+      <%= link_to 'Stream Share', root_path, class: "navbar-brand" %>
     </div>
-    <div class="col-lg-6">
-      <h1>
-      <%= form_tag("/search", method: "get", enforce_utf8: false) do %>
-          <div class="input-group">
-            <%= text_field_tag :q, nil, placeholder: "Search streams...", autocomplete: "off", class: "form-control" %>
-            <span class="input-group-btn">
+
+    <%= form_tag("/search", method: "get", enforce_utf8: false, class: "navbar-form navbar-right") do %>
+        <div class="input-group">
+          <%= text_field_tag :q, nil, placeholder: "Search streams", autocomplete: "off", class: "form-control" %>
+          <span class="input-group-btn">
               <%= submit_tag :Go, name: nil, class: "btn btn-default" %>
             </span>
-          </div>
-      <% end %>
-      </h1>
-    </div>
+        </div>
+    <% end %>
   </div>
-
 </header>

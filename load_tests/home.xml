@@ -9,7 +9,7 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="54.85.132.168" port="80" type="tcp"></server>
+    <server host="0.0.0.0" port="3000" type="tcp"></server>
   </servers>
 
 
@@ -46,80 +46,66 @@
 
   <sessions>
 
-    <!-- Open home page. Wait for 15 secs. Search. -->
+    <!-- Open home page. Search. Visit first result. -->
     <session name="home-search" type="ts_http" weight="1">
 
       <!-- Visit home page -->
       <request>
         <http url='/' version='1.1' method='GET'/>
       </request>
-      <request>
-        <http url='/assets/application-5051e943fde6dabd2cb7ed9ccb7a462766d108b1231f340fb2008aae04c864a6.css'
-              version='1.1' method='GET'/>
-      </request>
-      <request>
-        <http url='/assets/application-e8f7cbef131995ec574161020aa5f1df2053aad57e2e29f8fa9ee3efd3babc2b.js'
-              version='1.1' method='GET'/>
-      </request>
 
-      <!-- Recent streams refresh itself every 5 secs -->
-      <for from="1" to="3" incr="1" var="counter">
-        <request subst="true">
-          <http url="/streams?after=undefined" method="GET" version="1.1">
-            <http_header name="X-Requested-With" value="XMLHttpRequest"/>
-          </http>
-        </request>
+      <!--Wait for upto 2 seconds-->
+      <thinktime value="2" random="true"/>
 
-        <!-- wait for 5 secs -->
-        <thinktime value="5"/>
-      </for>
-
-      <!-- Search -->
-      <setdynvars sourcetype="random_string" length="5">
+      <!-- Search. Query is of length 1 to increase chances of getting results -->
+      <setdynvars sourcetype="random_string" length="1">
         <var name="random_query"/>
       </setdynvars>
       <request subst="true">
-        <dyn_variable name="link" xpath="/html/body/div/div/div[1]/b/a/@href"/>
+        <dyn_variable name="stream_urls"
+                      xpath="//div[@class='stream bubble']//a/@href"/>
         <http url="/search?q=%%_random_query%%" version='1.1' method='GET'/>
       </request>
 
-      <!--wait upto 3 seconds-->
-      <thinktime value="3" random="true"/>
+      <!--wait upto 2 seconds-->
+      <thinktime value="2" random="true"/>
 
-      <!--visit first link-->
+      <!--Randomly select one stream from search results to visit-->
+      <setdynvars sourcetype="eval"
+                  code="fun({Pid,DynVars})->
+                           {ok,Val}=ts_dynvars:lookup('stream_urls',DynVars),
+                           Rand = random:uniform(length(Val)),
+                           lists:nth(Rand,Val)
+                        end.">
+        <var name="stream_url"/>
+      </setdynvars>
+
+      <!--visit the stream-->
       <request subst="true">
-        <http url="%%_link%%" version='1.1' method='GET'/>
+        <dyn_variable name="img_list" xpath="//img/@src"/>
+        <http url="%%_stream_url%%" version='1.1' method='GET'/>
       </request>
+
+      <!--TODO: Fix fetch all images logic for no images-->
+      <!--fetch all images-->
+      <!--<foreach name="img" in="img_list">-->
+      <!--<request subst="true">-->
+      <!--<http url="%%_img%%" method="GET" version="1.1"/>-->
+      <!--</request>-->
+      <!--</foreach>-->
 
     </session>
 
-    <!-- Open home page. Wait for 15 secs. Create a stream. Post a new message. -->
+    <!-- Open home page. Create a new stream. Post 5 text messages. -->
     <session name="home-create-stream" type="ts_http" weight="1">
 
       <!-- Visit home page -->
       <request>
         <http url='/' version='1.1' method='GET'/>
       </request>
-      <request>
-        <http url='/assets/application-5051e943fde6dabd2cb7ed9ccb7a462766d108b1231f340fb2008aae04c864a6.css'
-              version='1.1' method='GET'/>
-      </request>
-      <request>
-        <http url='/assets/application-e8f7cbef131995ec574161020aa5f1df2053aad57e2e29f8fa9ee3efd3babc2b.js'
-              version='1.1' method='GET'/>
-      </request>
 
-      <!-- Recent streams refresh itself every 5 secs -->
-      <for from="1" to="3" incr="1" var="counter">
-        <request subst="true">
-          <http url="/streams?after=undefined" method="GET" version="1.1">
-            <http_header name="X-Requested-With" value="XMLHttpRequest"/>
-          </http>
-        </request>
-
-        <!-- wait for 5 secs -->
-        <thinktime value="5"/>
-      </for>
+      <!--Wait for upto 5 seconds-->
+      <thinktime value="5" random="true"/>
 
       <!-- create a new stream -->
       <setdynvars sourcetype="random_string" length="10">
@@ -146,21 +132,90 @@
         <http url="%%_stream_url%%" version='1.1' method='GET'/>
       </request>
 
-      <!-- wait for 0 to 5 secs -->
-      <thinktime value="5" random="true"/>
+      <!--Wait for upto 2 seconds-->
+      <thinktime value="2" random="true"/>
 
-      <!-- post a text message -->
+      <!-- post text messages -->
       <setdynvars sourcetype="eval" code='fun({Pid,DynVars})-> [[13, 10]] end.'>
         <var name="nl"/>
       </setdynvars>
-      <setdynvars sourcetype="random_string" length="50">
-        <var name="data"/>
-      </setdynvars>
+
+      <for from="1" to="5" incr="1" var="counter">
+        <setdynvars sourcetype="random_string" length="50">
+          <var name="data"/>
+        </setdynvars>
+        <request subst="true">
+          <http url='%%_stream_url%%/contents' version='1.1' method='POST'
+                content_type='multipart/form-data; boundary=----FormBoundary'
+                contents='------FormBoundary%%_nl%%Content-Disposition: form-data; name="content[owner]"%%_nl%%%%_nl%%%%_owner%%%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="content[data]"%%_nl%%%%_nl%%%%_data%%%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="content[file]"; filename=""%%_nl%%Content-Type: application/octet-stream%%_nl%%%%_nl%%%%_nl%%------FormBoundary--'/>
+        </request>
+
+        <thinktime value="2" random="true"/>
+      </for>
+
+    </session>
+
+    <!-- Open home page. Visit a recent stream. Stay there for 5 polls. -->
+    <session name="home-visit-stream" type="ts_http" weight="1">
+
+      <!-- Visit home page -->
       <request subst="true">
-        <http url='%%_stream_url%%/contents' version='1.1' method='POST'
-              content_type='multipart/form-data; boundary=----FormBoundary'
-              contents='------FormBoundary%%_nl%%Content-Disposition: form-data; name="content[owner]"%%_nl%%%%_nl%%%%_owner%%%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="content[data]"%%_nl%%%%_nl%%%%_data%%%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="content[file]"; filename=""%%_nl%%Content-Type: application/octet-stream%%_nl%%%%_nl%%%%_nl%%------FormBoundary--'/>
+        <dyn_variable name="stream_urls"
+                      xpath="//div[@class='stream bubble']//a/@href"/>
+        <http url='/' version='1.1' method='GET'/>
       </request>
+
+      <!--Wait for upto 2 seconds-->
+      <thinktime value="2" random="true"/>
+
+      <!--Randomly select one recent stream to visit-->
+      <setdynvars sourcetype="eval"
+                  code="fun({Pid,DynVars})->
+                           {ok,Val}=ts_dynvars:lookup('stream_urls',DynVars),
+                           Rand = random:uniform(length(Val)),
+                           lists:nth(Rand,Val)
+                        end.">
+        <var name="stream_url"/>
+      </setdynvars>
+
+      <!--visit the stream-->
+      <request subst="true">
+        <dyn_variable name="img_list" xpath="//img/@src"/>
+        <dyn_variable name="content_bubbles"
+                      xpath="//div[@class='content bubble']/@data-time"/>
+        <http url="%%_stream_url%%" version='1.1' method='GET'/>
+      </request>
+
+      <!--TODO: Fix fetch all images logic for no images-->
+      <!--fetch all images-->
+      <!--<foreach name="img" in="img_list" exclude="$">-->
+      <!--<request subst="true">-->
+      <!--<http url="%%_img%%" method="GET" version="1.1"/>-->
+      <!--</request>-->
+      <!--</foreach>-->
+
+      <!--select last data time-->
+      <setdynvars sourcetype="eval"
+                  code="fun({Pid,DynVars})->
+                           {ok,Val}=ts_dynvars:lookup('content_bubbles',DynVars),
+                           lists:nth(length(Val),Val)
+                        end.">
+        <var name="last_data_time"/>
+      </setdynvars>
+
+      <for from="1" to="5" incr="1" var="counter">
+        <request subst="true">
+          <!--TODO: Change last_data_time after every diff update-->
+          <!--<dyn_variable name="diff_content_bubbles"-->
+          <!--xpath="//div[@class='content bubble']/@data-time"/>-->
+          <http url="%%_stream_url%%/contents.js?after=%%_last_data_time%%" version='1.1' method='GET'>
+            <http_header name="X-Requested-With" value="XMLHttpRequest"/>
+          </http>
+        </request>
+
+        <!--Wait for 5 seconds-->
+        <thinktime value="5"/>
+      </for>
 
     </session>
   </sessions>

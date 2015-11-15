@@ -1,34 +1,40 @@
-<div class="container text-center ">
-  <h3><%= @stream.title %>
-    <small>by <%= @stream.owner %>,</small>
-    <i>
-      <small>expires in <%= time_ago_in_words(@stream.expire_at, include_seconds: true) %></small>
-    </i>
-  </h3>
-  <%= @stream.description %>
-</div>
+<div class="container-fluid">
+  <div class="row">
 
-<div id="contents" data-id="<%= @stream.id %>">
-  <%= render @stream.contents %>
-</div>
+    <div class="col-md-4 sidebar">
 
-<div class="row col-md-6 col-md-offset-3 navbar navbar-fixed-bottom">
-  <%= form_for :content, url: stream_contents_path(@stream[:id]), enforce_utf8: false, class: "form-group" do |f| %>
+      <div class="well well-sm">
+        <h3><%= @stream.title %>
+          <small>by <%= @stream.owner %></small>
+        </h3>
 
-      <%= f.text_field :owner, placeholder: "Your name", required: true, value: session[:owner], class: "form-control", autocomplete: "off" %>
-      <div class="input-group">
-        <%= f.text_field :data, placeholder: "Type a message", required: true, class: "form-control", autocomplete: "off", autofocus: "true" %>
-        <span class="input-group-btn">
-            <%= submit_tag "Send", name: nil, class: "btn btn-primary" %>
-          </span>
+        <label class="label label-info">expires
+          in <%= time_ago_in_words(@stream.expire_at, include_seconds: true) %></label>
+
+        <p class="lead">
+          <%= @stream.description %>
+        </p>
       </div>
-      <%= f.file_field :file, class: "form-control", accept: "image/*" %>
 
-  <% end %>
+      <div>
+        <%= form_for :content, url: stream_contents_path(@stream[:id]), enforce_utf8: false do |f| %>
+
+            <%= f.text_field :owner, placeholder: "Your name", required: true, value: session[:owner], class: "form-control", autocomplete: "off" %>
+            <div class="input-group">
+              <%= f.text_field :data, placeholder: "Type a message", required: true, class: "form-control", autocomplete: "off", autofocus: "true" %>
+              <span class="input-group-btn">
+                <%= submit_tag "Send", name: nil, class: "btn btn-primary" %>
+              </span>
+            </div>
+            <%= f.file_field :file, class: "form-control", accept: "image/*" %>
+
+        <% end %>
+      </div>
+
+    </div>
+
+    <div class="contents col-md-8 col-md-offset-4" data-id="<%= @stream.id %>">
+      <%= render @stream.contents %>
+    </div>
+  </div>
 </div>
-
-<script type="application/x-javascript">
-  $("#contents").scrollTop(function () {
-    return this.scrollHeight
-  })
-</script>
