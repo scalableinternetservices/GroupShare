@@ -1,6 +1,6 @@
 * HIGH PRIORITY *
 - Fix test for fetching images on page with no img tags
-- Correct auto refresh logic of show stream
+- Correct auto refresh logic of show stream in tests
 - optimise stream page diff update ??
 - fix tests so that no 4xx errors occur
 - decide and improve test sessions
