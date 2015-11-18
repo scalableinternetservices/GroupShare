@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
-<!DOCTYPE tsung SYSTEM "/usr/local/Cellar/tsung/1.6.0/share/tsung/tsung-1.0.dtd">
+<-?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd">
 <tsung loglevel="notice" version="1.0">
 
   <!-- Client side setup -->
@@ -46,7 +46,7 @@
 
   <sessions>
 
-    <!-- Open home page. Search. Visit first result. -->
+    <!-- Open home page. Search. Visit one of the results. -->
     <session name="home-search" type="ts_http" weight="1">
 
       <!-- Visit home page -->
@@ -63,35 +63,38 @@
       </setdynvars>
       <request subst="true">
         <dyn_variable name="stream_urls"
-                      xpath="//div[@class='stream bubble']//a/@href"/>
+            xpath="//div[@class='stream bubble']//a/@href"/>
+        <dyn_variable name="numresults" xpath="//div[@class='results']/@num" />
         <http url="/search?q=%%_random_query%%" version='1.1' method='GET'/>
       </request>
 
       <!--wait upto 2 seconds-->
       <thinktime value="2" random="true"/>
 
-      <!--Randomly select one stream from search results to visit-->
-      <setdynvars sourcetype="eval"
+      <if var="numresults" gt="0">
+          <!--Randomly select one stream from search results to visit-->
+          <setdynvars sourcetype="eval"
                   code="fun({Pid,DynVars})->
                            {ok,Val}=ts_dynvars:lookup('stream_urls',DynVars),
                            Rand = random:uniform(length(Val)),
                            lists:nth(Rand,Val)
                         end.">
-        <var name="stream_url"/>
-      </setdynvars>
+          <var name="stream_url"/>
+          </setdynvars>
 
-      <!--visit the stream-->
-      <request subst="true">
-        <dyn_variable name="img_list" xpath="//img/@src"/>
-        <http url="%%_stream_url%%" version='1.1' method='GET'/>
-      </request>
+          <!--visit the stream-->
+          <request subst="true">
+            <dyn_variable name="img_list" xpath="//img/@src"/>
+            <http url="%%_stream_url%%" version='1.1' method='GET'/>
+          </request>
 
-      <!--fetch all images-->
-      <foreach name="img" in="img_list">
-        <request subst="true">
-          <http url="%%_img%%" method="GET" version="1.1"/>
-        </request>
-      </foreach>
+          <!--fetch all images-->
+          <foreach name="img" in="img_list">
+            <request subst="true">
+              <http url="%%_img%%" method="GET" version="1.1"/>
+            </request>
+          </foreach>
+      </if>
 
     </session>
 

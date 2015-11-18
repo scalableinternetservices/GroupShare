@@ -1,13 +1,14 @@
 <div class="container center-block text-center">
 
-  <p class="lead">
-  <h4><%= @results.size %> results found for <b> <%= params[:q] %> </b></h4>
-  </p>
+  <div class="results" num="<%= @results.size %>">
+    <h4><%= @results.size %> results found for <b>"<%= params[:q] %>"</b></h4>
 
-  <div class="text-left">
-    <% if @results.size > 0 %>
-        <%= render @results %>
-    <% end %>
+    <div class="text-left">
+      <% if @results.size > 0 %>
+          <%= render @results %>
+      <% end %>
+    </div>
+
   </div>
 
 </div>
