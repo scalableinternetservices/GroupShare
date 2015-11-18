@@ -1,14 +1,10 @@
 * HIGH PRIORITY *
-- Fix test for fetching images on page with no img tags
-- Correct auto refresh logic of show stream in tests
-- optimise stream page diff update ??
 - fix tests so that no 4xx errors occur
-- decide and improve test sessions
+    - if no search results found
 - record baseline test data
 - use s3 bucket for file uploads
 
 * LOW PRIORITY *
 - Auto scroll to bottom on stream page
-- Fix site styling throughout
 - implement search pagination
 - async message post on stream page
