@@ -86,17 +86,16 @@
         <http url="%%_stream_url%%" version='1.1' method='GET'/>
       </request>
 
-      <!--TODO: Fix fetch all images logic for no images-->
       <!--fetch all images-->
-      <!--<foreach name="img" in="img_list">-->
-      <!--<request subst="true">-->
-      <!--<http url="%%_img%%" method="GET" version="1.1"/>-->
-      <!--</request>-->
-      <!--</foreach>-->
+      <foreach name="img" in="img_list">
+        <request subst="true">
+          <http url="%%_img%%" method="GET" version="1.1"/>
+        </request>
+      </foreach>
 
     </session>
 
-    <!-- Open home page. Create a new stream. Post 5 text messages. -->
+    <!-- Open home page. Create a new stream. Post 3 text messages. Upload 1 file. -->
     <session name="home-create-stream" type="ts_http" weight="1">
 
       <!-- Visit home page -->
@@ -129,18 +128,26 @@
 
       <!--visit the stream-->
       <request subst="true">
+        <dyn_variable name="img_list" xpath="//img/@src"/>
         <http url="%%_stream_url%%" version='1.1' method='GET'/>
       </request>
+
+      <!--fetch all images-->
+      <foreach name="img" in="img_list">
+        <request subst="true">
+          <http url="%%_img%%" method="GET" version="1.1"/>
+        </request>
+      </foreach>
 
       <!--Wait for upto 2 seconds-->
       <thinktime value="2" random="true"/>
 
-      <!-- post text messages -->
       <setdynvars sourcetype="eval" code='fun({Pid,DynVars})-> [[13, 10]] end.'>
         <var name="nl"/>
       </setdynvars>
 
-      <for from="1" to="5" incr="1" var="counter">
+      <!-- post 3 text messages -->
+      <for from="1" to="3" incr="1" var="counter">
         <setdynvars sourcetype="random_string" length="50">
           <var name="data"/>
         </setdynvars>
@@ -153,9 +160,26 @@
         <thinktime value="2" random="true"/>
       </for>
 
+      <!-- upload 1 file -->
+      <setdynvars sourcetype="eval"
+                  code='fun({Pid,DynVars})->
+                            {ok, Bin} = file:read_file("sample.jpg"),
+                            Bin
+                          end.'>
+        <var name="attached_file"/>
+      </setdynvars>
+      <setdynvars sourcetype="random_string" length="50">
+        <var name="data"/>
+      </setdynvars>
+      <request subst="true">
+        <http url='%%_stream_url%%/contents' version='1.1' method='POST'
+              content_type='multipart/form-data; boundary=----FormBoundary'
+              contents='------FormBoundary%%_nl%%Content-Disposition: form-data; name="content[owner]"%%_nl%%%%_nl%%%%_owner%%%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="content[data]"%%_nl%%%%_nl%%%%_data%%%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="content[file]"; filename="sample.jpg"%%_nl%%Content-Type: image/jpeg%%_nl%%%%_nl%%%%_attached_file%%%%_nl%%------FormBoundary--'/>
+      </request>
+
     </session>
 
-    <!-- Open home page. Visit a recent stream. Stay there for 5 polls. -->
+    <!-- Open home page. Visit a recent stream. Stay there for 3 polls. -->
     <session name="home-visit-stream" type="ts_http" weight="1">
 
       <!-- Visit home page -->
@@ -171,10 +195,10 @@
       <!--Randomly select one recent stream to visit-->
       <setdynvars sourcetype="eval"
                   code="fun({Pid,DynVars})->
-                           {ok,Val}=ts_dynvars:lookup('stream_urls',DynVars),
-                           Rand = random:uniform(length(Val)),
-                           lists:nth(Rand,Val)
-                        end.">
+      {ok,Val}=ts_dynvars:lookup('stream_urls',DynVars),
+      Rand = random:uniform(length(Val)),
+      lists:nth(Rand,Val)
+      end.">
         <var name="stream_url"/>
       </setdynvars>
 
@@ -183,27 +207,26 @@
         <dyn_variable name="img_list" xpath="//img/@src"/>
         <dyn_variable name="content_bubbles"
                       xpath="//div[@class='content bubble']/@data-time"/>
-        <http url="%%_stream_url%%" version='1.1' method='GET'/>
+        <http url="/" version='1.1' method='GET'/>
       </request>
 
-      <!--TODO: Fix fetch all images logic for no images-->
       <!--fetch all images-->
-      <!--<foreach name="img" in="img_list" exclude="$">-->
-      <!--<request subst="true">-->
-      <!--<http url="%%_img%%" method="GET" version="1.1"/>-->
-      <!--</request>-->
-      <!--</foreach>-->
+      <foreach name="img" in="img_list">
+        <request subst="true">
+          <http url="%%_img%%" method="GET" version="1.1"/>
+        </request>
+      </foreach>
 
       <!--select last data time-->
       <setdynvars sourcetype="eval"
                   code="fun({Pid,DynVars})->
-                           {ok,Val}=ts_dynvars:lookup('content_bubbles',DynVars),
-                           lists:nth(length(Val),Val)
-                        end.">
+      {ok,Val}=ts_dynvars:lookup('content_bubbles',DynVars),
+      lists:nth(length(Val),Val)
+      end.">
         <var name="last_data_time"/>
       </setdynvars>
 
-      <for from="1" to="5" incr="1" var="counter">
+      <for from="1" to="3" incr="1" var="counter">
         <request subst="true">
           <!--TODO: Change last_data_time after every diff update-->
           <!--<dyn_variable name="diff_content_bubbles"-->

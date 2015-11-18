@@ -18,15 +18,25 @@
 
       <div>
         <%= form_for :content, url: stream_contents_path(@stream[:id]), enforce_utf8: false do |f| %>
-
             <%= f.text_field :owner, placeholder: "Your name", required: true, value: session[:owner], class: "form-control", autocomplete: "off" %>
+
             <div class="input-group">
+
+              <span class="input-group-btn">
+                <span class="btn btn-default btn-file">
+                  <span class="glyphicon glyphicon-picture">
+                    <%= f.file_field :file, accept: "image/*" %>
+                  </span>
+                </span>
+              </span>
+
               <%= f.text_field :data, placeholder: "Type a message", required: true, class: "form-control", autocomplete: "off", autofocus: "true" %>
+
               <span class="input-group-btn">
                 <%= submit_tag "Send", name: nil, class: "btn btn-primary" %>
               </span>
+
             </div>
-            <%= f.file_field :file, class: "form-control", accept: "image/*" %>
 
         <% end %>
       </div>

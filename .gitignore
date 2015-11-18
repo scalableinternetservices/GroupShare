@@ -20,4 +20,4 @@
 /.idea
 
 #Ignore the folder where paperclip uploads happen
-public
+/public/system

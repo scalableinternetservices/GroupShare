@@ -15,3 +15,16 @@
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require_tree .
+
+$(document).on('change', '.btn-file :file', function () {
+    var input = $(this),
+        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+    input.trigger('fileselect', [label]);
+});
+
+$(document).ready(function () {
+    $('.btn-file :file').on('fileselect', function (event, label) {
+        $("input[name='content[data]']").val(label);
+        $("input[type='submit']").focus();
+    });
+});

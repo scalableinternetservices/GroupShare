@@ -7,7 +7,10 @@ $(function () {
 });
 
 function updateContents() {
-    var stream_id = $(".contents").attr("data-id");
+    var contents = $(".contents");
+    if(contents.length == 0)  return;
+
+    var stream_id = contents.attr("data-id");
     var after = $(".content:last-child").attr("data-time");
     $.getScript(stream_id + "/contents.js?after=" + after);
     setTimeout(updateContents, 5000);
