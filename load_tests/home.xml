@@ -96,7 +96,7 @@
 
     </session>
 
-    <!-- Open home page. Create a new stream. Post 5 text messages. -->
+    <!-- Open home page. Create a new stream. Post 3 text messages. Upload 1 file. -->
     <session name="home-create-stream" type="ts_http" weight="1">
 
       <!-- Visit home page -->
@@ -135,12 +135,12 @@
       <!--Wait for upto 2 seconds-->
       <thinktime value="2" random="true"/>
 
-      <!-- post text messages -->
       <setdynvars sourcetype="eval" code='fun({Pid,DynVars})-> [[13, 10]] end.'>
         <var name="nl"/>
       </setdynvars>
 
-      <for from="1" to="5" incr="1" var="counter">
+      <!-- post 3 text messages -->
+      <for from="1" to="3" incr="1" var="counter">
         <setdynvars sourcetype="random_string" length="50">
           <var name="data"/>
         </setdynvars>
@@ -152,6 +152,23 @@
 
         <thinktime value="2" random="true"/>
       </for>
+
+      <!-- upload 1 file -->
+      <setdynvars sourcetype="eval"
+                  code='fun({Pid,DynVars})->
+                            {ok, Bin} = file:read_file("sample.jpg"),
+                            Bin
+                          end.'>
+        <var name="attached_file"/>
+      </setdynvars>
+      <setdynvars sourcetype="random_string" length="50">
+        <var name="data"/>
+      </setdynvars>
+      <request subst="true">
+        <http url='%%_stream_url%%/contents' version='1.1' method='POST'
+              content_type='multipart/form-data; boundary=----FormBoundary'
+              contents='------FormBoundary%%_nl%%Content-Disposition: form-data; name="content[owner]"%%_nl%%%%_nl%%%%_owner%%%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="content[data]"%%_nl%%%%_nl%%%%_data%%%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="content[file]"; filename="sample.jpg"%%_nl%%Content-Type: image/jpeg%%_nl%%%%_nl%%%%_attached_file%%%%_nl%%------FormBoundary--'/>
+      </request>
 
     </session>
 
