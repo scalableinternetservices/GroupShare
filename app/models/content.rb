@@ -1,5 +1,5 @@
 class Content < ActiveRecord::Base
   belongs_to :stream
   has_attached_file :file
-  validates_attachment :file, content_type: {content_type: ["image/png", "image/jpeg", "image/jpg"]}
+  validates_attachment_content_type :file, :content_type => /\Aimage\/.*\Z/
 end
