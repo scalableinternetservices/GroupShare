@@ -1,0 +1,12 @@
+Multiple Passenger:
+----------------
+App instances: 1
+App instance type: m3.medium
+DB instance type: db.m3.medium
+master: commit dfad93779bcdbbdd674b6b07e32a68cb5b4c6c30
+no optimisations
+with s3
+
+Tsung:
+-----
+m3.medium
