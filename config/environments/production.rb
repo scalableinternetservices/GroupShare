@@ -84,7 +84,7 @@ Rails.application.configure do
           :provider => 'AWS',
           :region => 'us-east-1'
       },
-      :fog_directory => 'scalableinternetservices',
+      :fog_directory => 'cs290b',
       :path => 'groupshare/'
   }
 end
