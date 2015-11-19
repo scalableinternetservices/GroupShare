@@ -9,9 +9,8 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="0.0.0.0" port="3000" type="tcp"></server>
+    <server host="54.152.21.235" port="80" type="tcp"></server>
   </servers>
-
 
   <load>
     <arrivalphase phase="1" duration="30" unit="second">
@@ -63,8 +62,8 @@
       </setdynvars>
       <request subst="true">
         <dyn_variable name="stream_urls"
-            xpath="//div[@class='stream bubble']//a/@href"/>
-        <dyn_variable name="numresults" xpath="//div[@class='results']/@num" />
+                      xpath="//div[@class='stream bubble']//a/@href"/>
+        <dyn_variable name="numresults" xpath="//div[@class='results']/@num"/>
         <http url="/search?q=%%_random_query%%" version='1.1' method='GET'/>
       </request>
 
@@ -72,28 +71,28 @@
       <thinktime value="2" random="true"/>
 
       <if var="numresults" gt="0">
-          <!--Randomly select one stream from search results to visit-->
-          <setdynvars sourcetype="eval"
-                  code="fun({Pid,DynVars})->
+        <!--Randomly select one stream from search results to visit-->
+        <setdynvars sourcetype="eval"
+                    code="fun({Pid,DynVars})->
                            {ok,Val}=ts_dynvars:lookup('stream_urls',DynVars),
                            Rand = random:uniform(length(Val)),
                            lists:nth(Rand,Val)
                         end.">
           <var name="stream_url"/>
-          </setdynvars>
+        </setdynvars>
 
-          <!--visit the stream-->
+        <!--visit the stream-->
+        <request subst="true">
+          <dyn_variable name="img_list" xpath="//img/@src"/>
+          <http url="%%_stream_url%%" version='1.1' method='GET'/>
+        </request>
+
+        <!--fetch all images-->
+        <foreach name="img" in="img_list">
           <request subst="true">
-            <dyn_variable name="img_list" xpath="//img/@src"/>
-            <http url="%%_stream_url%%" version='1.1' method='GET'/>
+            <http url="%%_img%%" method="GET" version="1.1"/>
           </request>
-
-          <!--fetch all images-->
-          <foreach name="img" in="img_list">
-            <request subst="true">
-              <http url="%%_img%%" method="GET" version="1.1"/>
-            </request>
-          </foreach>
+        </foreach>
       </if>
 
     </session>
