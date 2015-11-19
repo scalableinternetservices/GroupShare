@@ -9,7 +9,7 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="groupshare-mp-m3m-2-1556176012.us-east-1.elb.amazonaws.com" port="80" type="tcp"></server>
+    <server host="groupshare-mp-m3m-3-938239295.us-east-1.elb.amazonaws.com" port="80" type="tcp"></server>
   </servers>
 
   <load>
