@@ -1,26 +1,28 @@
 <div class="container-fluid">
   <div class="row">
 
-    <div class="col-md-4 sidebar">
+    <%= cache(cache_key_for_stream_info(@stream)) do %>
 
-      <div class="well well-sm">
-        <h3><%= @stream.title %>
-          <small>by <%= @stream.owner %></small>
-        </h3>
+        <div class="col-md-4 sidebar">
 
-        <label class="label label-info">expires
-          in <%= time_ago_in_words(@stream.expire_at, include_seconds: true) %></label>
+          <div class="well well-sm">
+            <h3><%= @stream.title %>
+              <small>by <%= @stream.owner %></small>
+            </h3>
 
-        <p class="lead">
-          <%= @stream.description %>
-        </p>
-      </div>
+            <label class="label label-info">expires
+              in <%= time_ago_in_words(@stream.expire_at, include_seconds: true) %></label>
 
-      <div>
-        <%= form_for :content, url: stream_contents_path(@stream[:id]), enforce_utf8: false do |f| %>
-            <%= f.text_field :owner, placeholder: "Your name", required: true, value: session[:owner], class: "form-control", autocomplete: "off" %>
+            <p class="lead">
+              <%= @stream.description %>
+            </p>
+          </div>
 
-            <div class="input-group">
+          <div>
+            <%= form_for :content, url: stream_contents_path(@stream[:id]), enforce_utf8: false do |f| %>
+                <%= f.text_field :owner, placeholder: "Your name", required: true, value: session[:owner], class: "form-control", autocomplete: "off" %>
+
+                <div class="input-group">
 
               <span class="input-group-btn">
                 <span class="btn btn-default btn-file">
@@ -30,21 +32,27 @@
                 </span>
               </span>
 
-              <%= f.text_field :data, placeholder: "Type a message", required: true, class: "form-control", autocomplete: "off", autofocus: "true" %>
+                  <%= f.text_field :data, placeholder: "Type a message", required: true, class: "form-control", autocomplete: "off", autofocus: "true" %>
 
-              <span class="input-group-btn">
+                  <span class="input-group-btn">
                 <%= submit_tag "Send", name: nil, class: "btn btn-primary" %>
               </span>
 
-            </div>
+                </div>
 
-        <% end %>
-      </div>
+            <% end %>
+          </div>
 
-    </div>
+        </div>
 
-    <div class="contents col-md-8 col-md-offset-4" data-id="<%= @stream.id %>">
-      <%= render @stream.contents %>
-    </div>
+    <% end %>
+
+    <%= cache(cache_key_for_stream_contents(@stream)) do %>
+
+        <div class="contents col-md-8 col-md-offset-4" data-id="<%= @stream.id %>">
+          <%= render @stream.contents %>
+        </div>
+
+    <% end %>
   </div>
 </div>
