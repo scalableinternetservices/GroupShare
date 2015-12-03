@@ -1,0 +1,10 @@
+
+    <div class="stream bubble" data-time="<%= cstream.created_at.to_i %>" data-id="<%= cstream.id %>">
+
+      <b><%= link_to cstream.title, cstream %> (<%= cstream.csize %>)</b>
+      by
+      <i> <%= cstream.owner %> </i> <br/>
+      <i> <%= time_ago_in_words(cstream.created_at, include_seconds: true) %> ago</i>
+
+    </div>
+

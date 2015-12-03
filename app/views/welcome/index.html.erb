@@ -31,10 +31,12 @@
 
     <%= cache("recent-streams", expires_in: 30.seconds) do %>
 
+
         <div class="recent-streams col-sm-5 col-md-4">
-          <h5>Recent streams</h5>
-          <%= render @recent_streams %>
-        </div>
+          <h3>Recent streams New</h3>
+        <%= render @recent_streams_content_size %>
+
+         </div>
 
     <% end %>
   </div>
