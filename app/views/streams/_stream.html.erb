@@ -1,4 +1,4 @@
-<%= cache(cache_key_for_stream_row(stream)) do %>
+<%= cache stream do %>
 
     <div class="stream bubble" data-time="<%= stream.created_at.to_i %>" data-id="<%= stream.id %>">
 

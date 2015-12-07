@@ -19,7 +19,7 @@ class StreamsController < ApplicationController
 
   # GET /streams/1
   def show
-    @stream = Stream.where("expire_at > ?", Time.now).find(params[:id])
+    @stream = Stream.where("expire_at > ?", Time.now).includes(:contents).find(params[:id])
     fresh_when([@stream, @stream.contents])
   rescue ActiveRecord::RecordNotFound
     render_404
