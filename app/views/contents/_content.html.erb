@@ -1,4 +1,4 @@
-<%= cache(cache_key_for_content_row(content)) do %>
+<%= cache content do %>
 
     <div class="content bubble" data-time="<%= content.created_at.to_i %>">
       <b><%= content.owner %>:</b> <%= content.title %>
