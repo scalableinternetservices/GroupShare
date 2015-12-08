@@ -1,0 +1,15 @@
+Single Puma with memcached:
+--------------------------
+c3.4xl
+process parallelism: 32
+thread parallelism: 4
+ruby vm: MRI
+MemcachedInstanceType: m3.medium
+master: commit d5c7b2a6bc6eec164b62648972cad2e345c56337
+client/server side caching
+with s3
+db optimisations
+
+Tsung:
+-----
+m3.medium
