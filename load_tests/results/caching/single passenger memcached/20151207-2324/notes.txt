@@ -1,6 +1,7 @@
 Single Passenger with memcached:
 -------------------------------
 m3.2xl
+MemcachedInstanceType: m3.medium
 master: commit d5c7b2a6bc6eec164b62648972cad2e345c56337
 client/server side caching
 with s3

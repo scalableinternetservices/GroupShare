@@ -1,0 +1,15 @@
+Multiple Puma with memcached:
+----------------------------
+App instances: 4
+App instance type: m3.large
+DB instance type: db.m3.medium
+MemcachedInstanceType: m3.medium
+master: commit d5c7b2a6bc6eec164b62648972cad2e345c56337
+client/server side caching
+with s3
+db optimisations
+
+Tsung:
+-----
+m3.medium
+
