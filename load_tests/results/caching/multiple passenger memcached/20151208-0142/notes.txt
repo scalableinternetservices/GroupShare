@@ -1,5 +1,5 @@
-Multiple Puma with memcached:
-----------------------------
+Multiple Passenger with memcached:
+---------------------------------
 App instances: 4
 App instance type: m3.large
 DB instance type: db.m3.medium
