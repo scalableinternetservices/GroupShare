@@ -1,0 +1,10 @@
+Single Passenger:
+----------------
+m3.2xlarge
+master: commit dfad93779bcdbbdd674b6b07e32a68cb5b4c6c30
+no optimisations
+with s3
+
+Tsung:
+-----
+m3.medium
